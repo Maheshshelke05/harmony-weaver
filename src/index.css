@@ -79,12 +79,38 @@
   }
 }
 
+/* Hero section */
+.hero-heading {
+  font-size: clamp(52px, 7vw, 96px);
+}
+
+@media (max-width: 768px) {
+  .hero-heading {
+    font-size: clamp(42px, 10vw, 72px);
+  }
+}
+
 /* Floating music notes */
 @keyframes float-up {
   0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
   10% { opacity: 0.3; }
   90% { opacity: 0.3; }
   100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes hero-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes hero-spin-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes hero-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 @keyframes pulse-glow {
