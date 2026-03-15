@@ -1,180 +1,152 @@
 import { useEffect, useState } from "react";
 import { useCountUp } from "@/hooks/useCountUp";
 
-const notes = ["♪", "♫", "♬", "🎵", "🎶"];
-
-const FloatingNote = ({ delay, left, size }: { delay: number; left: number; size: number }) => (
-  <span
-    className="absolute text-primary/[0.04] pointer-events-none select-none"
-    style={{
-      left: `${left}%`,
-      fontSize: `${size}px`,
-      animationDuration: `${8 + Math.random() * 6}s`,
-      animationDelay: `${delay}s`,
-      animation: `float-up ${10 + Math.random() * 8}s linear ${delay}s infinite`,
-    }}
-  >
-    {notes[Math.floor(Math.random() * notes.length)]}
-  </span>
-);
-
-const FloatingCard = ({ emoji, text, className, delay }: { emoji: string; text: string; className: string; delay: number }) => (
-  <div
-    className={`absolute px-4 py-3 rounded-xl border border-primary/30 bg-primary/10 backdrop-blur-md text-foreground text-sm font-body font-medium z-10 ${className}`}
-    style={{
-      animation: `hero-bob 3s ease-in-out ${delay}s infinite`,
-    }}
-  >
-    <span className="mr-2">{emoji}</span>{text}
-  </div>
-);
-
 const StatItem = ({ target, suffix, label }: { target: number; suffix: string; label: string }) => {
   const { count, ref } = useCountUp(target, 2000);
   return (
     <div className="text-center">
-      <span ref={ref} className="block text-4xl font-display text-primary">{count}{suffix}</span>
-      <span className="text-xs uppercase tracking-wider text-muted-foreground font-body">{label}</span>
+      <span ref={ref} className="block text-2xl sm:text-3xl font-display text-primary">{count}{suffix}</span>
+      <span className="text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground font-body mt-0.5 block">{label}</span>
     </div>
   );
 };
 
 const HeroSection = () => {
   const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 100);
-    return () => clearTimeout(t);
-  }, []);
-
-  const instruments = [
-    { emoji: "🎸", name: "Guitar" },
-    { emoji: "🎹", name: "Keyboard" },
-    { emoji: "🎤", name: "Vocal" },
-    { emoji: "🎵", name: "Mouth Organ" },
-  ];
+  useEffect(() => { const t = setTimeout(() => setLoaded(true), 80); return () => clearTimeout(t); }, []);
 
   return (
-    <section
-      id="home"
-      className="relative min-h-screen flex items-center overflow-hidden grain-overlay"
-    >
-      {/* Background floating notes */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <FloatingNote key={i} delay={i * 1.5} left={Math.random() * 100} size={80 + Math.random() * 80} />
-      ))}
+    <section id="home" className="relative min-h-[100svh] flex items-center overflow-hidden"
+      style={{ background: "linear-gradient(135deg, hsl(43,96%,97%) 0%, hsl(40,30%,97%) 50%, hsl(43,96%,97%) 100%)" }}>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-24 lg:pt-0">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div
-            className="space-y-6 transition-all duration-[800ms] ease-out"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateX(0)" : "translateX(-60px)",
-            }}
-          >
-            <span className="inline-block text-xs tracking-[0.3em] text-primary uppercase font-body font-semibold">
-              PUNE • CHANDRAPUR • SINCE 2006
+      {/* Animated background blobs */}
+      <div className="blob-bg w-[500px] h-[500px] top-[-10%] right-[-5%] animate-float-orb"
+        style={{ background: "rgba(202,138,4,0.07)" }} />
+      <div className="blob-bg w-[350px] h-[350px] bottom-[10%] left-[-5%]"
+        style={{ background: "rgba(202,138,4,0.05)", animationDelay: "3s" }} />
+
+      {/* Subtle grid */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none"
+        style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.4) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-28 pb-24 lg:pb-32">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+          {/* ── Left content ── */}
+          <div className="space-y-6 sm:space-y-8"
+            style={{ transition: "all 900ms cubic-bezier(0.16,1,0.3,1)", opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(32px)" }}>
+
+            <span className="pill-label">
+              <span className="glow-dot" /> Pune · Chandrapur · Since 2006
             </span>
 
-            <h1 className="font-display leading-none text-foreground hero-heading">
-              {["LEARN MUSIC.", "FEEL THE", "RHYTHM."].map((word, i) => (
-                <span
-                  key={i}
-                  className={`block transition-all duration-500 ${i === 2 ? "text-primary" : ""}`}
-                  style={{
-                    opacity: loaded ? 1 : 0,
-                    transform: loaded ? "translateY(0)" : "translateY(20px)",
-                    transitionDelay: `${i * 150 + 200}ms`,
-                  }}
-                >
-                  {word}
+            <h1 className="font-display hero-heading text-foreground">
+              {["INDIA'S BEST", "MUSIC", "CLASSES"].map((w, i) => (
+                <span key={i} className={`block ${i === 1 ? "text-gold-shimmer" : ""}`}
+                  style={{ opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(20px)", transition: `all 700ms cubic-bezier(0.16,1,0.3,1) ${i * 130 + 150}ms` }}>
+                  {w}
                 </span>
               ))}
+              <span className="block text-foreground"
+                style={{ opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(20px)", transition: "all 700ms cubic-bezier(0.16,1,0.3,1) 540ms" }}>
+                FOR ALL AGES
+              </span>
             </h1>
 
-            <p className="font-serif italic text-xl lg:text-2xl text-muted-foreground">
-              Your Gateway to Musical Excellence
+            <p className="text-muted-foreground font-body text-base sm:text-lg leading-relaxed max-w-md">
+              Structured, personalized music courses in Guitar, Keyboard, Singing & Mouth Organ — for Children, Adults & Senior Citizens.
             </p>
 
             {/* Instrument tags */}
             <div className="flex flex-wrap gap-2">
-              {instruments.map(({ emoji, name }) => (
-                <span
-                  key={name}
-                  className="px-3.5 py-1.5 rounded-full border border-primary/30 bg-primary/5 text-sm font-body text-foreground/80"
-                >
-                  {emoji} {name}
+              {[["🎸","Guitar"],["🎹","Keyboard"],["🎤","Vocal"],["🎵","Mouth Organ"]].map(([e,n]) => (
+                <span key={n} className="px-3 py-1.5 rounded-full border border-border bg-card/60 text-xs font-body text-foreground/70 hover:border-primary/50 hover:text-primary transition-all duration-200">
+                  {e} {n}
                 </span>
               ))}
             </div>
 
-            {/* CTA Buttons */}
-            <div
-              className="flex flex-col sm:flex-row gap-4 pt-2 transition-all duration-500"
-              style={{
-                opacity: loaded ? 1 : 0,
-                transform: loaded ? "translateY(0)" : "translateY(20px)",
-                transitionDelay: "600ms",
-              }}
-            >
-              <a
-                href="#contact"
-                className="px-8 py-4 bg-primary text-primary-foreground font-body font-bold text-sm rounded-md animate-pulse-glow hover:scale-105 transition-transform duration-300 text-center"
-              >
+            {/* CTAs */}
+            <div className="flex flex-col xs:flex-row gap-3"
+              style={{ opacity: loaded ? 1 : 0, transition: "all 700ms cubic-bezier(0.16,1,0.3,1) 600ms" }}>
+              <a href="#contact"
+                className="flex items-center justify-center px-8 py-4 bg-primary text-primary-foreground font-body font-bold text-sm rounded-2xl animate-pulse-glow hover:scale-[1.03] active:scale-95 transition-transform duration-200">
                 Book Free Demo Class →
               </a>
-              <a
-                href="#courses"
-                className="px-8 py-4 border-2 border-primary text-primary font-body font-semibold text-sm rounded-md hover:bg-primary/10 transition-all duration-300 text-center"
-              >
+              <a href="#courses"
+                className="flex items-center justify-center px-8 py-4 border border-border/60 text-foreground/80 font-body font-semibold text-sm rounded-2xl hover:border-primary/50 hover:text-primary transition-all duration-200">
                 Explore Courses
               </a>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6">
-              <StatItem target={1000} suffix="+" label="Students" />
-              <StatItem target={30} suffix="+" label="Faculty" />
-              <StatItem target={25} suffix="+" label="Years" />
-              <StatItem target={2} suffix="" label="Branches" />
+            {/* Stats row */}
+            <div className="grid grid-cols-4 gap-3 pt-6 border-t border-border/40"
+              style={{ opacity: loaded ? 1 : 0, transition: "all 700ms cubic-bezier(0.16,1,0.3,1) 750ms" }}>
+              <StatItem target={5783} suffix="+" label="Students" />
+              <StatItem target={10}   suffix="+" label="Faculty" />
+              <StatItem target={19}   suffix="+" label="Years" />
+              <StatItem target={2}    suffix=""  label="Branches" />
             </div>
           </div>
 
-          {/* Right Visual */}
-          <div
-            className="hidden lg:flex justify-center items-center relative transition-all duration-[1000ms] ease-out"
-            style={{
-              opacity: loaded ? 1 : 0,
-              transform: loaded ? "translateX(0)" : "translateX(60px)",
-            }}
-          >
-            {/* Floating info cards */}
-            <FloatingCard emoji="🏆" text="Best Music Classes" className="top-4 right-4" delay={0} />
-            <FloatingCard emoji="🎓" text="1000+ Students Trained" className="bottom-16 -left-4" delay={0.5} />
-            <FloatingCard emoji="⭐" text="93 Google Reviews" className="bottom-4 right-8" delay={1} />
+          {/* ── Right: Torrins-style circular image cluster ── */}
+          <div className="hidden lg:flex justify-center items-center relative h-[540px]"
+            style={{ transition: "all 1000ms cubic-bezier(0.16,1,0.3,1) 250ms", opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateX(40px)" }}>
 
-            {/* Rotating ring */}
-            <div
-              className="w-[400px] h-[400px] rounded-full border-2 border-dashed border-primary/30 flex items-center justify-center"
-              style={{ animation: "hero-spin 20s linear infinite" }}
-            >
-              {/* Inner circle - counter-rotates to stay still */}
-              <div
-                className="w-[340px] h-[340px] rounded-full bg-secondary flex items-center justify-center"
-                style={{ animation: "hero-spin-reverse 20s linear infinite" }}
-              >
-                <span
-                  className="text-[200px] text-primary/90 font-serif select-none leading-none"
-                  style={{ animation: "hero-bob 3s ease-in-out infinite" }}
-                >
-                  ♪
-                </span>
+            {/* Outer decorative ring */}
+            <div className="absolute w-[460px] h-[460px] rounded-full border border-dashed border-primary/15"
+              style={{ animation: "hero-spin 30s linear infinite" }} />
+
+            {/* Main large circle */}
+            <div className="circle-frame w-[300px] h-[300px]"
+              style={{ animation: "hero-bob 5s ease-in-out infinite" }}>
+              <div className="w-full h-full bg-gradient-to-br from-primary/20 via-card to-secondary flex items-center justify-center">
+                <span className="text-[120px] leading-none" style={{ filter: "drop-shadow(0 0 20px rgba(234,179,8,0.5))" }}>🎸</span>
               </div>
             </div>
+
+            {/* Small floating circles */}
+            {[
+              { emoji: "🎹", size: "w-20 h-20", pos: "top-12 right-16", delay: "0.5s" },
+              { emoji: "🎤", size: "w-16 h-16", pos: "bottom-16 right-8", delay: "1s" },
+              { emoji: "🎵", size: "w-14 h-14", pos: "top-20 left-12", delay: "1.5s" },
+            ].map(({ emoji, size, pos, delay }) => (
+              <div key={emoji}
+                className={`absolute ${pos} ${size} circle-frame bg-card flex items-center justify-center text-2xl`}
+                style={{ animation: `hero-bob 4s ease-in-out ${delay} infinite` }}>
+                <div className="w-full h-full bg-card flex items-center justify-center text-2xl">{emoji}</div>
+              </div>
+            ))}
+
+            {/* Floating info badges */}
+            {[
+              { text: "🏆 Best in Pune", pos: "top-6 right-4" },
+              { text: "⭐ 93 Reviews", pos: "bottom-10 left-6" },
+            ].map(({ text, pos }, i) => (
+              <div key={text}
+                className={`absolute ${pos} px-4 py-2.5 rounded-2xl glass text-sm font-body font-medium text-foreground whitespace-nowrap`}
+                style={{ animation: `hero-bob 3.5s ease-in-out ${i * 0.8}s infinite` }}>
+                {text}
+              </div>
+            ))}
           </div>
+
+          {/* Mobile emoji strip */}
+          <div className="lg:hidden flex justify-center gap-4 pb-2">
+            {["🎸","🎹","🎤","🎵"].map((e, i) => (
+              <div key={i} className="w-16 h-16 rounded-2xl bg-card border border-border flex items-center justify-center text-3xl"
+                style={{ animation: `hero-bob 3s ease-in-out ${i * 0.35}s infinite` }}>{e}</div>
+            ))}
+          </div>
+
         </div>
+      </div>
+
+      {/* Curved bottom divider — Torrins style */}
+      <div className="curve-bottom">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="hsl(40,20%,93%)" />
+        </svg>
       </div>
     </section>
   );

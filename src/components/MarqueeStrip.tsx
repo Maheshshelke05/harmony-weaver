@@ -5,21 +5,25 @@ const items = [
   "🎵 Mouth Organ",
   "🎼 Online Classes Available",
   "📜 Course Certification",
-  "🏆 Best Music Classes",
+  "🏆 Best Music Classes in Pune",
+  "⭐ 93+ Google Reviews",
+  "🎓 5783+ Students Trained",
+  "📍 Pune & Chandrapur",
 ];
 
-const MarqueeStrip = () => {
-  const content = items.join("  •  ");
+const content = items.join("   ✦   ");
 
-  return (
-    <div className="bg-primary py-3 overflow-hidden">
-      <div className="animate-marquee whitespace-nowrap flex">
-        <span className="text-primary-foreground font-body font-semibold text-sm tracking-wide mx-4">
-          {content}  •  {content}  •  {content}
+const MarqueeStrip = () => (
+  <div className="relative overflow-hidden select-none py-3"
+    style={{ background: "hsl(43,96%,94%)", borderTop: "1px solid hsl(38,92%,48%,0.20)", borderBottom: "1px solid hsl(38,92%,48%,0.20)" }}>
+    <div className="flex whitespace-nowrap animate-marquee">
+      {[content, content, content].map((c, i) => (
+        <span key={i} className="text-foreground/50 font-body font-medium text-xs sm:text-sm tracking-wide shrink-0 px-4">
+          {c}
         </span>
-      </div>
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
 export default MarqueeStrip;

@@ -13,6 +13,7 @@ import GallerySection from "@/components/GallerySection";
 import ContactCTA from "@/components/ContactCTA";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
+import MobileTabs from "@/components/MobileTabs";
 
 const Index = () => {
   return (
@@ -20,17 +21,25 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <MarqueeStrip />
-      <AboutSection />
-      <CoursesSection />
-      <AgeGroupsSection />
-      <CoreFeaturesSection />
-      <WhyMusicGalaxy />
-      <FacultySection />
-      <TestimonialsSection />
-      <FAQSection />
-      <GallerySection />
-      <ContactCTA />
-      <Footer />
+
+      {/* ── Desktop layout — all sections visible ── */}
+      <div className="hidden lg:block">
+        <AboutSection />
+        <CoursesSection />
+        <AgeGroupsSection />
+        <CoreFeaturesSection />
+        <WhyMusicGalaxy />
+        <FacultySection />
+        <TestimonialsSection />
+        <FAQSection />
+        <GallerySection />
+        <ContactCTA />
+        <Footer />
+      </div>
+
+      {/* ── Mobile layout — tabbed ── */}
+      <MobileTabs />
+
       <FloatingButtons />
     </div>
   );
